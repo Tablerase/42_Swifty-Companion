@@ -3,9 +3,11 @@ import { ThemedText } from "@/components/ui/ThemedText";
 import { theme } from "@/constants/theme";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { Image } from "expo-image";
-import { View } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 import * as WebBrowser from "expo-web-browser";
 import { getRandomBytes } from "expo-crypto";
+import { AuthService } from "@/services/authService";
+import { useAuth } from "@/hooks/useAuth";
 
 /**
  * 42 API
@@ -13,6 +15,7 @@ import { getRandomBytes } from "expo-crypto";
  * web auth flow: https://api.intra.42.fr/apidoc/guides/web_application_flow
  * expo auth session: https://docs.expo.dev/versions/latest/sdk/auth-session/
  */
+
 // Handle web popup
 WebBrowser.maybeCompleteAuthSession();
 
@@ -30,77 +33,91 @@ const generateSecureState = () => {
   );
 };
 
-const handle42Login = async () => {
-  const uid = generateSecureState();
-
-  console.log("Login with 42 Pressed");
-  const params = {
-    client_id: process.env.EXPO_PUBLIC_42API_CLIENT_ID,
-    redirect_uri: redirectUri,
-    response_type: "code",
-    scope: "public",
-    state: uid,
-  };
-
-  try {
-    // Exchange code
-    const queryString = new URLSearchParams(params).toString();
-    const authUrl = `${authorizeApiURL}?${queryString}`;
-
-    console.log("Opening auth URL:", authUrl);
-    const result = await WebBrowser.openAuthSessionAsync(authUrl, redirectUri);
-    console.log("WebBrowser result:", result);
-
-    // Access token
-    if (result.type === "success" && result.url) {
-      const url = new URL(result.url);
-      const code = url.searchParams.get("code");
-      const state = url.searchParams.get("state");
-      // Check for CSRF
-      if (state !== uid) {
-        throw new Error("State mismatch - possible CSRF attack");
-      }
-      if (code) {
-        const tokenParams = new FormData();
-        tokenParams.append("grant_type", "authorization_code");
-        tokenParams.append(
-          "client_id",
-          process.env.EXPO_PUBLIC_42API_CLIENT_ID
-        );
-        // ! Here done in app for learning purpose (secret must only be present on server never client side)
-        tokenParams.append(
-          "client_secret",
-          process.env.EXPO_PUBLIC_42API_CLIENT_SECRET
-        );
-        tokenParams.append("code", code);
-        tokenParams.append("state", uid);
-
-        // Redirection after auth
-        // TODO: Handle redirection when user has access token
-        tokenParams.append("redirect_uri", redirectUri);
-
-        const tokenResponse = await fetch(tokenApiURL, {
-          method: "POST",
-          body: tokenParams,
-        });
-
-        if (!tokenResponse.ok) {
-          throw new Error(`Token exchange failed: ${tokenResponse.status}`);
-        }
-
-        const tokenData = await tokenResponse.json();
-        console.log("Token data:", tokenData);
-      } else {
-        throw new Error("No authorization code received");
-      }
-    }
-  } catch (error) {
-    console.log("Authorization cancelled or failed", error);
-  }
-};
-
 export default function Login() {
   const textColor = useThemeColor({}, "background");
+  const tintColor = useThemeColor({}, "tint");
+  const { checkAuth, isLoading, setIsLoading } = useAuth();
+
+  const handle42Login = async () => {
+    const uid = generateSecureState();
+
+    console.log("Login with 42 Pressed");
+
+    // ! Only for educationnal purpose (should be handle in a secure backend)
+    const clientId = process.env.EXPO_PUBLIC_42API_CLIENT_ID;
+    const clientSecret = process.env.EXPO_PUBLIC_42API_CLIENT_SECRET;
+    if (!clientId || !clientSecret) {
+      console.error("42 API env is not configured");
+      return;
+    }
+
+    const params = {
+      client_id: clientId,
+      redirect_uri: redirectUri,
+      response_type: "code",
+      scope: "public",
+      state: uid,
+    };
+
+    try {
+      setIsLoading(true);
+      // Exchange code
+      const queryString = new URLSearchParams(params).toString();
+      const authUrl = `${authorizeApiURL}?${queryString}`;
+
+      console.log("Opening auth URL:", authUrl);
+      const result = await WebBrowser.openAuthSessionAsync(
+        authUrl,
+        redirectUri
+      );
+      console.log("WebBrowser result:", result);
+
+      // Access token
+      if (result.type === "success" && result.url) {
+        const url = new URL(result.url);
+        const code = url.searchParams.get("code");
+        const state = url.searchParams.get("state");
+        // Check for CSRF
+        if (state !== uid) {
+          throw new Error("State mismatch - possible CSRF attack");
+        }
+        if (code) {
+          const tokenParams = new FormData();
+          tokenParams.append("grant_type", "authorization_code");
+          tokenParams.append("client_id", clientId);
+          tokenParams.append("client_secret", clientSecret);
+          tokenParams.append("code", code);
+          tokenParams.append("state", uid);
+          tokenParams.append("redirect_uri", redirectUri);
+
+          const tokenResponse = await fetch(tokenApiURL, {
+            method: "POST",
+            body: tokenParams,
+          });
+
+          if (!tokenResponse.ok) {
+            throw new Error(`Token exchange failed: ${tokenResponse.status}`);
+          }
+
+          const tokenData = await tokenResponse.json();
+          console.log("Token data:", tokenData);
+          await AuthService.storeToken(tokenData);
+          await checkAuth();
+        } else {
+          throw new Error("No authorization code received");
+        }
+      }
+    } catch (error) {
+      console.log("Authorization cancelled or failed", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (isLoading) {
+    return <ActivityIndicator color={tintColor} />;
+  }
+
   return (
     <View
       style={{
