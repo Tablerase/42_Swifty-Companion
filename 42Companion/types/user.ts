@@ -16,9 +16,12 @@ export interface User42 {
   };
 }
 
+// TODO: Fill this informations
 export interface User42Details extends User42 {
   level?: number;
-  correction_point: number;
-  wallet: number;
+  level_percentage?: number;
+  correction_point?: number;
+  wallet?: number;
+  projects?: string; // with status success or failed
   // ... add more infos if needed
 }

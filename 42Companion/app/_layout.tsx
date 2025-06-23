@@ -1,16 +1,19 @@
 import { AuthProvider } from "@/contexts/AuthContext";
 import { useAuth } from "@/hooks/useAuth";
 import { SplashScreen, Stack } from "expo-router";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 // Prevent splash screen auto hide
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   return (
-    <AuthProvider>
-      <SplashScreenController />
-      <RootNavigator />
-    </AuthProvider>
+    <SafeAreaProvider>
+      <AuthProvider>
+        <SplashScreenController />
+        <RootNavigator />
+      </AuthProvider>
+    </SafeAreaProvider>
   );
 }
 
@@ -21,6 +24,7 @@ const RootNavigator = () => {
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="index" />
       <Stack.Screen name="login" />
+      <Stack.Screen name="networkError" />
       <Stack.Protected guard={isAuthenticated}>
         <Stack.Screen
           name="(protected)"

@@ -8,6 +8,7 @@ import * as WebBrowser from "expo-web-browser";
 import { getRandomBytes } from "expo-crypto";
 import { AuthService } from "@/services/authService";
 import { useAuth } from "@/hooks/useAuth";
+import { router } from "expo-router";
 
 /**
  * 42 API
@@ -90,25 +91,39 @@ export default function Login() {
           tokenParams.append("state", uid);
           tokenParams.append("redirect_uri", redirectUri);
 
-          const tokenResponse = await fetch(tokenApiURL, {
-            method: "POST",
-            body: tokenParams,
-          });
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 5000); // 5s timeout
 
-          if (!tokenResponse.ok) {
-            throw new Error(`Token exchange failed: ${tokenResponse.status}`);
+          try {
+            const tokenResponse = await fetch(tokenApiURL, {
+              method: "POST",
+              body: tokenParams,
+              signal: controller.signal,
+            });
+
+            if (!tokenResponse.ok) {
+              throw new Error(`Token exchange failed: ${tokenResponse.status}`);
+            }
+
+            const tokenData = await tokenResponse.json();
+            console.log("Token data:", tokenData);
+            await AuthService.storeToken(tokenData);
+            await checkAuth();
+          } finally {
+            clearTimeout(timeoutId);
           }
-
-          const tokenData = await tokenResponse.json();
-          console.log("Token data:", tokenData);
-          await AuthService.storeToken(tokenData);
-          await checkAuth();
         } else {
           throw new Error("No authorization code received");
         }
       }
-    } catch (error) {
-      console.log("Authorization cancelled or failed", error);
+    } catch (error: any) {
+      if (error.name === "AbortError") {
+        console.log("Authorization failed: Request timed out.", error);
+        setIsLoading(false);
+        router.push("/networkError");
+      } else {
+        console.log("Authorization cancelled or failed", error);
+      }
     } finally {
       setIsLoading(false);
     }
