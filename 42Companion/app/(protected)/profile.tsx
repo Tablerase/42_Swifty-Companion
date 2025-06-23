@@ -1,6 +1,6 @@
 import { ThemedText } from "@/components/ui/ThemedText";
 import { ThemedView } from "@/components/ui/ThemedView";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, TextInput, View } from "react-native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -13,6 +13,9 @@ const SearchBar = () => {
         <TextInput
           placeholder="Login to search"
           style={{ paddingHorizontal: 10 }}
+          onChangeText={(text) => console.log("Search text:", text)}
+          autoCapitalize="none"
+          autoCorrect={false}
         />
       </ThemedView>
     </>
@@ -31,6 +34,16 @@ const UserInfos = () => {
 
 export default function Profile() {
   const [login, setLogin] = useState<string>("");
+
+  useEffect(() => {
+    // Simulate fetching the login from a global state or context
+    const fetchLogin = async () => {
+      // Simulate an API call or context retrieval
+      const fetchedLogin = "user123"; // Replace with actual logic to get the login
+      setLogin(fetchedLogin);
+    };
+    fetchLogin();
+  }, [login]);
 
   return (
     <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
@@ -55,7 +68,6 @@ const styles = StyleSheet.create({
   },
   userInfosContainer: {
     flex: 15,
-    minHeight: 500,
     backgroundColor: "cyan",
   },
 });
