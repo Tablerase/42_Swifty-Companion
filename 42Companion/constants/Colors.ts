@@ -19,7 +19,7 @@ export const Colors = {
     ternary: theme.colors.ternary.main,
     ternaryBackground: theme.colors.ternary.light,
     icon: theme.colors.neutral.light,
-    tabIconDefault: theme.colors.neutral.main,
+    tabIconDefault: theme.colors.text.disabled,
     tabIconSelected: tintColorLight,
     success: theme.colors.accent.success,
     warning: theme.colors.accent.warning,

@@ -6,7 +6,7 @@ type ApiClient = {
   post: <T>(url: string, body: any, options?: RequestInit) => Promise<T>;
 };
 
-class NetworkService {
+class APIService {
   private baseURL = "https://api.intra.42.fr/v2";
   public apiClient: ApiClient;
 
@@ -80,4 +80,4 @@ class NetworkService {
   }
 }
 
-export const networkService = new NetworkService();
+export const apiService = new APIService();

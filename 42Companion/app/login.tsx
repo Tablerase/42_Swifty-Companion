@@ -9,6 +9,7 @@ import { getRandomBytes } from "expo-crypto";
 import { AuthService } from "@/services/authService";
 import { useAuth } from "@/hooks/useAuth";
 import { router } from "expo-router";
+import { ThemedImageBackground } from "@/components/ui/ThemedImageBackground";
 
 /**
  * 42 API
@@ -35,7 +36,7 @@ const generateSecureState = () => {
 };
 
 export default function Login() {
-  const textColor = useThemeColor({}, "background");
+  const textColor = theme.colors.text.secondary;
   const tintColor = useThemeColor({}, "tint");
   const { checkAuth, isLoading, setIsLoading } = useAuth();
 
@@ -51,7 +52,6 @@ export default function Login() {
       console.error("42 API env is not configured");
       return;
     }
-
     const params = {
       client_id: clientId,
       redirect_uri: redirectUri,
@@ -134,34 +134,44 @@ export default function Login() {
   }
 
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
+    <ThemedImageBackground
+      source={require("@/assets/images/School42Themed.png")}
+      placeholder={"CZOyPJD,t%xa?]t5oyoz"}
     >
-      <ThemedText type="title" style={{ paddingBottom: 100 }}>
-        Login Page
-      </ThemedText>
-      <ThemedText
-        style={{ textAlign: "center", padding: theme.spacing.medium }}
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
       >
-        To access 42 API data, you need to be logged with your 42 account :
-      </ThemedText>
-      <ThemedButtonIcon
-        // disabled={!request}
-        title="Login with "
-        icon={
-          <Image
-            source={require("@/assets/images/42_Logo.svg")}
-            style={{ width: 24, height: 24, tintColor: textColor }}
-            contentFit="contain"
-          />
-        }
-        iconPosition="right"
-        onPress={handle42Login}
-      />
-    </View>
+        <ThemedText
+          type="title"
+          style={{ paddingBottom: 100 }}
+          lightColor={theme.colors.ternary.main}
+        >
+          Login Page
+        </ThemedText>
+        <ThemedText
+          style={{ textAlign: "center", padding: theme.spacing.large }}
+          lightColor={textColor}
+        >
+          To access 42 API data, you need to be logged with your 42 account :
+        </ThemedText>
+        <ThemedButtonIcon
+          // disabled={!request}
+          title="Login with "
+          icon={
+            <Image
+              source={require("@/assets/images/42_Logo.svg")}
+              style={{ width: 24, height: 24, tintColor: textColor }}
+              contentFit="contain"
+            />
+          }
+          iconPosition="right"
+          onPress={handle42Login}
+        />
+      </View>
+    </ThemedImageBackground>
   );
 }
