@@ -125,6 +125,7 @@ const styles = StyleSheet.create({
   userHeaderCardDetails: {
     marginLeft: theme.spacing.large,
     gap: 5,
+    flexShrink: 1,
   },
   userHeaderCardDisplayName: {
     backgroundColor: theme.colors.secondary.main,

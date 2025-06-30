@@ -33,7 +33,7 @@ export const UserSkills = ({
     (skill) => Math.round(skill.level * 10) / 10
   );
   const skillLabels = cursus.skills.map((skill) =>
-    skill.name.length > 10 ? skill.name.substring(0, 10) + "..." : skill.name
+    skill.name.length > 10 ? skill.name.substring(0, 10) + ".." : skill.name
   );
   const dataLabels = cursus.skills.map((skill) => `${skill.level.toFixed(1)}`);
 
@@ -82,13 +82,13 @@ export const UserSkills = ({
           }}
           // Grid styling
           gridConfig={{
-            stroke: theme.colors.secondary.main,
+            stroke: theme.colors.secondary.light,
             strokeWidth: 0.3,
             opacity: 0.3,
           }}
           // Axes lines styling
           asterLinesConfig={{
-            stroke: theme.colors.secondary.main,
+            stroke: theme.colors.ternary.main,
             strokeWidth: 0.3,
           }}
           // Labels styling - make them more visible
@@ -102,7 +102,7 @@ export const UserSkills = ({
           dataLabelsConfig={{
             stroke: theme.colors.primary.dark,
           }}
-          labelsPositionOffset={0}
+          labelsPositionOffset={-0.3}
           dataLabelsPositionOffset={-0.1}
         />
       </View>
