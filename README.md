@@ -1,12 +1,13 @@
 # 42_Swifty-Companion
 
-The aim of the project is to build an application that will retrieve the information of 42 students, using the 42 API
+The aim of the project is to build an application that will retrieve the information of 42 students, using the 42 API v2. The application will allow users to log in with their 42 account, search for students by login, and view their information, including skills, projects, level, etc.
 
 ## Features
 
 - Login with 42 account
 - Search for a student by login
-- View student profile
+- View student information
+- Display skills and projects
 
 ```mermaid
 ---
@@ -27,7 +28,8 @@ flowchart LR
   Profile:::profile
   subgraph Profile
     G[View Student Profile] --> H[Display Profile Information]
-    H --> I[Show Achievements]
+    H -.- I[Show Skills]
+    H -.- F[Show Projects]
   end
 
   Logout:::login
@@ -60,7 +62,15 @@ classDef profile fill:#ffb,stroke:#333,stroke-width:2px;
    ```bash
    npm install
    ```
-4. Start the development server:
+4. Configure the app:
+   - Use the `.env.example` file to create a `.env` file with your 42 API information.
+   - Generate assets/fonts/services files for Android:
+     - Run the following command to generate the necessary assets and services files:
+       ```bash
+       npx expo prebuild
+       ```
+     - This will create the `android/app/src/main/res` directory with the necessary files.
+5. Start the development server:
    ```bash
    # If running on a physical device
    npx expo start --tunnel --dev-client
@@ -68,7 +78,7 @@ classDef profile fill:#ffb,stroke:#333,stroke-width:2px;
    ```
    npx expo start
    ```
-5. Building the development client:
+6. Building the development client:
    ```bash
    npx expo run:android
    ```
@@ -76,7 +86,7 @@ classDef profile fill:#ffb,stroke:#333,stroke-width:2px;
      ```bash
        npx expo prebuild
      ```
-6. Open the app on your device or emulator (if not already running).
+7. Open the app on your device or emulator (if not already running).
 
 ## 42 API
 

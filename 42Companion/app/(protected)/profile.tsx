@@ -18,10 +18,11 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import { ThemedImageBackground } from "@/components/ui/ThemedImageBackground";
 import { apiService } from "@/services/apiService";
 import { User42Details } from "@/types/user";
+import { UserInfos } from "@/components/UserInfos";
 
 const SearchBarButton = ({ onPress }: { onPress: () => void }) => {
   const { isUserLoading } = useUser();
-  const loadingColor = useThemeColor({}, "success");
+  const loadingColor = useThemeColor({}, "primary");
   const accentColor = useThemeColor({}, "ternary");
 
   return isUserLoading ? (
@@ -64,7 +65,7 @@ const SearchBar = () => {
             fontFamily: "SpaceMono",
             color: theme.colors.text.secondary,
           }}
-          onChangeText={(text) => setLoginTextInput(text)}
+          onChangeText={(text) => setLoginTextInput(text.trim())}
           value={loginTextInput}
           autoCapitalize="none"
           autoCorrect={false}
@@ -79,26 +80,10 @@ const SearchBar = () => {
   );
 };
 
-const UserInfos = () => {
-  return (
-    <>
-      <ScrollView style={styles.userInfosContainer}>
-        <ThemedText>Users infos</ThemedText>
-      </ScrollView>
-    </>
-  );
-};
-
 export default function Profile() {
   const { loginToSearch, setUser, setIsUserLoading } = useUser();
 
   useEffect(() => {
-    const fetchMe = async () => {
-      // TODO: Use me as User if User is empty
-      // const me = await apiService.apiClient.get("/me");
-      // console.log("Me: ", me);
-    };
-
     const fetchUser = async () => {
       const params = new URLSearchParams({
         "filter[login]": loginToSearch || "",
@@ -119,6 +104,7 @@ export default function Profile() {
           email: result.email,
           first_name: result.first_name,
           last_name: result.last_name,
+          displayname: result.displayname,
           kind: result.kind,
           image: result.image,
           correction_point: result.correction_point,
@@ -140,20 +126,24 @@ export default function Profile() {
       }
     };
 
-    const trimLogin = loginToSearch ? loginToSearch.trim() : "";
-    if (trimLogin.length > 0) {
-      console.log("Fetch in progress...");
-      setIsUserLoading(true);
-      try {
-        fetchUser();
-      } catch (error) {
-        console.log("User fetch error:", error);
-      } finally {
-        console.log("Fetch ended");
-        setIsUserLoading(false);
+    const handleFetch = async () => {
+      const trimLogin = loginToSearch ? loginToSearch.trim() : "";
+      if (trimLogin.length > 0) {
+        console.log("Fetch in progress...");
+        setIsUserLoading(true);
+        try {
+          await fetchUser();
+        } catch (error) {
+          console.log("User fetch error:", error);
+        } finally {
+          console.log("Fetch ended");
+          setIsUserLoading(false);
+        }
       }
-    }
-  }, [loginToSearch]);
+    };
+
+    handleFetch();
+  }, [loginToSearch, setUser, setIsUserLoading]);
 
   return (
     <ThemedImageBackground

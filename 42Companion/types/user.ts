@@ -5,6 +5,7 @@ export interface User42 {
   email: string;
   first_name: string;
   last_name: string;
+  displayname: string;
   kind: string;
   image?: {
     link: string;
@@ -17,7 +18,6 @@ export interface User42 {
   };
 }
 
-// TODO: Fill this informations
 export interface User42Details extends User42 {
   correction_point?: number;
   wallet?: number;
@@ -53,7 +53,15 @@ export interface CursusUser42 {
   level: number;
   skills: Skill42[];
   cursus_id: number;
+  cursus: {
+    id: number;
+    created_at: string;
+    name: string;
+    slug: string;
+    kind: string;
+  };
   has_coalition: boolean;
+  updated_at: string | null;
   blackholed_at: string | null;
   created_at: string;
 }
