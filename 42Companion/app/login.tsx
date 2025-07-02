@@ -27,7 +27,7 @@ const tokenApiURL = "https://api.intra.42.fr/oauth/token";
 const redirectUri = "companion42://login";
 
 // Generate cryptographically secure random string
-const generateSecureState = () => {
+export const generateSecureState = () => {
   const bytes = getRandomBytes(32);
   return bytes.reduce(
     (str, byte) => str + byte.toString(16).padStart(2, "0"),

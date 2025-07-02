@@ -95,6 +95,7 @@ The 42 API is used to retrieve student information. You can find the documentati
 - Getting started: https://api.intra.42.fr/apidoc/guides/getting_started
 - App registration: https://profile.intra.42.fr/oauth/applications/new
 - API Flow: https://api.intra.42.fr/apidoc/guides/web_application_flow
+- Refresh token info: https://www.rfc-editor.org/rfc/rfc6749#section-3.2
 
 ## RadarCharts
 

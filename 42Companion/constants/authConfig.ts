@@ -8,3 +8,5 @@ export const AUTH_CONFIG = {
   },
   REDIRECT_URI: "companion42://login",
 } as const;
+
+export const two_hours_in_ms = 7200000;
