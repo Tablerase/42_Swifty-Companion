@@ -20,6 +20,12 @@ flowchart LR
     B --> C[Store Access Token]
   end
 
+  Authenticated:::login
+  subgraph Authenticated
+    GetToken[Get Access Token]
+    Refresh[Refresh Access Token]
+  end
+
   Search:::search
   subgraph Search
     D[Search for Student] --> E[Retrieve Student Data]
@@ -38,6 +44,7 @@ flowchart LR
   end
 
   Login -->|"(protected)"| intersection1{ }
+  Authenticated --> intersection1
   intersection1 --> Search
   intersection1 --> Logout
   intersection1 -->|'current user' by default| Profile
@@ -96,6 +103,62 @@ The 42 API is used to retrieve student information. You can find the documentati
 - App registration: https://profile.intra.42.fr/oauth/applications/new
 - API Flow: https://api.intra.42.fr/apidoc/guides/web_application_flow
 - Refresh token info: https://www.rfc-editor.org/rfc/rfc6749#section-3.2
+
+```mermaid
+---
+title: 42 API Authentication Flow
+---
+sequenceDiagram
+  actor User
+  participant App
+  participant Browser
+  participant 42API
+
+  rect rgb(200, 200, 255)
+    note over User, 42API: Authorization Code Grant Flow
+    User->>App: Clicks 'Login with 42'
+    App->>Browser: Opens auth URL <br/>(with client_id, redirect_uri, <br/>response_type='code', scope, state)
+    Browser->>42API: Requests /oauth/authorize
+    activate 42API
+    42API-->>Browser: Shows 42 login page
+    deactivate 42API
+    User->>Browser: Enters credentials and authorizes app
+    Browser->>42API: Submits authorization
+    activate 42API
+    42API-->>Browser: Redirects to App's redirect_uri <br/>with authorization_code and state
+    deactivate 42API
+    Browser->>App: Delivers authorization code and state
+    App->>App: Verifies state to prevent CSRF
+    App->>42API: POST /oauth/token <br/>(with grant_type='authorization_code', client_id, <br/>client_secret, code, redirect_uri)
+    activate 42API
+    42API-->>App: Returns access_token, refresh_token, expires_in
+    deactivate 42API
+    App->>App: Stores tokens securely
+    App-->>User: Logs user in
+  end
+
+  rect rgb(200, 255, 200)
+    note over User, 42API: Accessing Protected Resources
+    User->>App: Requests student data
+    App->>App: Retrieves stored access_token
+    App->>42API: GET <br/>/v2/me (or other endpoint) <br/>with Authorization: Bearer access_token
+    activate 42API
+    42API-->>App: Returns user data
+    deactivate 42API
+    App-->>User: Displays user data
+  end
+
+  rect rgb(255, 255, 200)
+    note over App, 42API: Refreshing Access Token
+    loop Access token expired
+      App->>42API: POST <br/>/oauth/token (with grant_type='refresh_token', <br/>refresh_token, client_id, client_secret)
+      activate 42API
+      42API-->>App: Returns new access_token and refresh_token
+      deactivate 42API
+      App->>App: Stores new tokens
+    end
+  end
+```
 
 ## RadarCharts
 
