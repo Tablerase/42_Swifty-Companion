@@ -8,6 +8,8 @@ interface UserContextProps {
   setUser: (user: User42Details | null) => void;
   isUserLoading: boolean;
   setIsUserLoading: (status: boolean) => void;
+  userNotFound: boolean;
+  setUserNotFound: (status: boolean) => void;
 }
 
 export const UserContext = createContext<UserContextProps | undefined>(
@@ -18,6 +20,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [loginToSearch, setLoginToSearch] = useState<string | null>(null);
   const [user, setUser] = useState<User42Details | null>(null);
   const [isUserLoading, setIsUserLoading] = useState<boolean>(false);
+  const [userNotFound, setUserNotFound] = useState<boolean>(false);
 
   return (
     <UserContext
@@ -28,6 +31,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         setUser,
         isUserLoading,
         setIsUserLoading,
+        userNotFound,
+        setUserNotFound,
       }}
     >
       {children}

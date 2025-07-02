@@ -1,14 +1,6 @@
-import { ThemedText } from "@/components/ui/ThemedText";
 import { ThemedView } from "@/components/ui/ThemedView";
 import { useEffect, useState } from "react";
-import {
-  Button,
-  ScrollView,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { StyleSheet, TextInput, TouchableOpacity } from "react-native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useUser } from "@/hooks/useUser";
@@ -19,69 +11,18 @@ import { ThemedImageBackground } from "@/components/ui/ThemedImageBackground";
 import { apiService } from "@/services/apiService";
 import { User42Details } from "@/types/user";
 import { UserInfos } from "@/components/UserInfos";
-
-const SearchBarButton = ({ onPress }: { onPress: () => void }) => {
-  const { isUserLoading } = useUser();
-  const loadingColor = useThemeColor({}, "primary");
-  const accentColor = useThemeColor({}, "ternary");
-
-  return isUserLoading ? (
-    <TouchableOpacity
-      disabled={true}
-      style={[styles.searchBarSend, { backgroundColor: accentColor }]}
-      onPress={onPress}
-    >
-      <ThemedLoader size={20} color={loadingColor} />
-    </TouchableOpacity>
-  ) : (
-    <TouchableOpacity style={styles.searchBarSend} onPress={onPress}>
-      <MaterialCommunityIcons
-        name="send"
-        size={24}
-        color={theme.colors.primary.main}
-      />
-    </TouchableOpacity>
-  );
-};
-
-const SearchBar = () => {
-  const [loginTextInput, setLoginTextInput] = useState<string>("");
-  const { setLoginToSearch, isUserLoading } = useUser();
-  const searchColor = theme.colors.secondary.light;
-
-  return (
-    <>
-      <ThemedView style={styles.searchBarContainer}>
-        <MaterialCommunityIcons
-          name="account-search"
-          size={24}
-          color={searchColor}
-        />
-        <TextInput
-          placeholder="Login to search"
-          style={{
-            paddingHorizontal: 10,
-            flex: 1,
-            fontFamily: "SpaceMono",
-            color: theme.colors.text.secondary,
-          }}
-          onChangeText={(text) => setLoginTextInput(text.trim())}
-          value={loginTextInput}
-          autoCapitalize="none"
-          autoCorrect={false}
-        />
-        <SearchBarButton
-          onPress={() => {
-            setLoginToSearch(loginTextInput);
-          }}
-        />
-      </ThemedView>
-    </>
-  );
-};
+import { SearchBar } from "@/components/SearchBar";
+import { LoginNotFound } from "@/components/LoginNotFound";
 
 export default function Profile() {
-  const { loginToSearch, setUser, setIsUserLoading } = useUser();
+  const {
+    loginToSearch,
+    setLoginToSearch,
+    setUser,
+    setIsUserLoading,
+    userNotFound,
+    setUserNotFound,
+  } = useUser();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -119,9 +60,11 @@ export default function Profile() {
         // console.log("Parsed user:", foundUser);
 
         // After parse
+        setUserNotFound(false);
         setUser(foundUser);
       } else {
-        // TODO: Handle no user found
+        console.log("User not found", loginToSearch);
+        setUserNotFound(true);
         setUser(null);
       }
     };
@@ -145,6 +88,22 @@ export default function Profile() {
     handleFetch();
   }, [loginToSearch, setUser, setIsUserLoading]);
 
+  // User info at launch
+  useEffect(() => {
+    const fetchMe = async () => {
+      return await apiService.apiClient.get("/me");
+    };
+
+    const handleFetchMe = async () => {
+      const me: any = await fetchMe();
+      if (me && me.login) {
+        setLoginToSearch(me.login);
+      }
+    };
+
+    handleFetchMe();
+  }, []);
+
   return (
     <ThemedImageBackground
       placeholder={"CDMEp-0X01Sw0GNy~Knj"}
@@ -152,6 +111,9 @@ export default function Profile() {
     >
       <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
         <SearchBar />
+        {userNotFound && (
+          <LoginNotFound onHide={() => setUserNotFound(false)} />
+        )}
         <UserInfos />
       </SafeAreaView>
     </ThemedImageBackground>
@@ -161,21 +123,6 @@ export default function Profile() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  searchBarContainer: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    maxHeight: 50,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    backgroundColor: theme.colors.primary.main,
-  },
-  searchBarSend: {
-    backgroundColor: theme.colors.secondary.light,
-    paddingHorizontal: theme.spacing.large,
-    paddingVertical: theme.spacing.medium,
-    borderRadius: theme.borderRadius.medium,
   },
   userInfosContainer: {
     flex: 15,

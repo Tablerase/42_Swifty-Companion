@@ -67,7 +67,7 @@ export const UserProjects = ({
     return (
       <View style={[styles.container]}>
         <ThemedText style={styles.noDataText}>
-          No skills data available
+          No projects data available
         </ThemedText>
       </View>
     );

@@ -25,7 +25,12 @@ export const UserHeaderCard = ({
           contentFit="cover"
         />
       ) : (
-        <Skeleton width={150} height={150} style={styles.avatar} />
+        <Skeleton
+          width={150}
+          height={150}
+          style={styles.avatar}
+          animated={isUserLoading}
+        />
       )}
 
       <View style={styles.userHeaderCardDetails}>
@@ -74,28 +79,33 @@ export const UserHeaderCard = ({
               width={150}
               height={40}
               style={styles.userHeaderCardDisplayName}
+              animated={isUserLoading}
             />
             <Skeleton
               width={120}
               height={theme.fontSizes.medium}
               style={styles.userHeaderCardEmail}
+              animated={isUserLoading}
             />
             <View style={styles.userHeaderCardValues}>
               <Skeleton
                 width={60}
                 height={theme.fontSizes.small}
                 style={styles.UserHeaderCardValuesItem}
+                animated={isUserLoading}
               />
               <Skeleton
                 width={50}
                 height={theme.fontSizes.small}
                 style={styles.UserHeaderCardValuesItem}
+                animated={isUserLoading}
               />
             </View>
             <Skeleton
               width={150}
               height={20}
               style={styles.progressBarContainer}
+              animated={isUserLoading}
             />
           </>
         )}
