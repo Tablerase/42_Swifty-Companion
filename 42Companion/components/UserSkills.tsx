@@ -35,19 +35,19 @@ export const UserSkills = ({
   const skillLabels = cursus.skills.map((skill) =>
     skill.name.length > 10 ? skill.name.substring(0, 10) + ".." : skill.name
   );
-  const dataLabels = cursus.skills.map((skill) => `${skill.level.toFixed(1)}`);
 
   // Debug logging
-  console.log("Skills data:", {
-    skillsCount: cursus.skills.length,
-    skillNames: skillLabels,
-    skillLevels: radarData,
-    dataLabels: dataLabels,
-  });
+  // const dataLabels = cursus.skills.map((skill) => `${skill.level.toFixed(1)}`);
+  // console.log("Skills data:", {
+  //   skillsCount: cursus.skills.length,
+  //   skillNames: skillLabels,
+  //   skillLevels: radarData,
+  //   dataLabels: dataLabels,
+  // });
 
   // Calculate max value for better scaling
   const maxSkillLevel = Math.max(...cursus.skills.map((skill) => skill.level));
-  const chartMaxValue = Math.max(maxSkillLevel * 1.2, 10); // Add 20% padding or minimum 10
+  const chartMaxValue = Math.max(maxSkillLevel * 1.25, 10); // Add 25% padding or minimum 10
 
   // Calculate responsive chart size - increase to accommodate labels
   const chartSize = Math.max(screenWidth - 50, 280);
@@ -125,18 +125,18 @@ const styles = StyleSheet.create({
     borderRadius: theme.borderRadius.medium,
     backgroundColor: theme.colors.ternary.light + "aa",
   },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 8,
-    textAlign: "center",
-  },
-  subtitle: {
-    fontSize: 14,
-    marginBottom: 20,
-    textAlign: "center",
-    opacity: 0.7,
-  },
+  // title: {
+  //   fontSize: 20,
+  //   fontWeight: "bold",
+  //   marginBottom: 8,
+  //   textAlign: "center",
+  // },
+  // subtitle: {
+  //   fontSize: 14,
+  //   marginBottom: 20,
+  //   textAlign: "center",
+  //   opacity: 0.7,
+  // },
   chartContainer: {
     alignItems: "center",
     justifyContent: "center",
@@ -157,6 +157,6 @@ const styles = StyleSheet.create({
   noDataText: {
     fontSize: 16,
     textAlign: "center",
-    marginTop: 50,
+    marginVertical: 50,
   },
 });

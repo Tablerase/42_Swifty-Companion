@@ -95,3 +95,9 @@ The 42 API is used to retrieve student information. You can find the documentati
 - Getting started: https://api.intra.42.fr/apidoc/guides/getting_started
 - App registration: https://profile.intra.42.fr/oauth/applications/new
 - API Flow: https://api.intra.42.fr/apidoc/guides/web_application_flow
+
+## RadarCharts
+
+Here we use `react-native-gifted-charts` to display the radar charts for skills and projects. The library provides a simple way to create radar charts in React Native applications.
+
+- To use actual version, `newArchEnabled` must be set to `false` in `app.json` because the library is not compatible with the new architecture.

@@ -7,7 +7,7 @@
     "icon": "./assets/images/icon.png",
     "scheme": "companion42",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
+    "newArchEnabled": false,
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.tablerase.companion42"

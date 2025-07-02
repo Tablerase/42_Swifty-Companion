@@ -3,6 +3,7 @@ import { useUser } from "@/hooks/useUser";
 import { CursusUser42 } from "@/types/user";
 import { UserHeaderCard } from "./UserHeaderCard";
 import { UserSkills } from "./UserSkills";
+import { UserProjects } from "./UserProjects";
 
 export const UserInfos = () => {
   const { user } = useUser();
@@ -20,6 +21,7 @@ export const UserInfos = () => {
       <ScrollView style={styles.userInfosContainer}>
         <UserHeaderCard cursus={cursus} />
         <UserSkills cursus={cursus} />
+        <UserProjects cursus={cursus} />
       </ScrollView>
     </>
   );
