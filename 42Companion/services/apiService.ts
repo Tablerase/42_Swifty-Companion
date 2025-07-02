@@ -32,9 +32,18 @@ class APIService {
 
     let response: Response;
     try {
-      response = await fetch(`${this.baseURL}${url}`, options);
+      const timeoutDuration = 5000;
+      const controller = new AbortController();
+      setTimeout(() => {
+        controller.abort();
+      }, timeoutDuration);
+
+      response = await fetch(`${this.baseURL}${url}`, {
+        ...options,
+        signal: controller.signal,
+      });
     } catch (error) {
-      console.error("Network request failed", error);
+      console.log("Network request failed", error);
       router.push("/networkError");
       throw new Error("Network request failed");
     }
@@ -47,7 +56,7 @@ class APIService {
 
     if (!response.ok) {
       const errorBody = await response.text();
-      console.error("HTTP error:", errorBody);
+      console.log("HTTP error:", errorBody);
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
