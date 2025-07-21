@@ -15,7 +15,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#F5F5DC"
       },
       "edgeToEdgeEnabled": true,
       "package": "com.tablerase.companion42",
@@ -39,10 +39,9 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 200,
-          "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
+          "image": "./assets/images/splash.png",
+          "imageWidth": 300,
+          "backgroundColor": "#F5F5DC"
         }
       ],
       [
@@ -56,7 +55,7 @@
                 "fontDefinitions": [
                   {
                     "path": "./assets/fonts/SpaceMono-Regular.ttf",
-                    "weight": "800",
+                    "weight": 800,
                     "style": "normal"
                   }
                 ]

@@ -48,6 +48,12 @@ export default function Login() {
     // ! Only for educationnal purpose (should be handle in a secure backend)
     const clientId = process.env.EXPO_PUBLIC_42API_CLIENT_ID;
     const clientSecret = process.env.EXPO_PUBLIC_42API_CLIENT_SECRET;
+
+    console.log("Environment check:");
+    console.log("CLIENT_ID exists:", !!clientId);
+    console.log("CLIENT_SECRET exists:", !!clientSecret);
+    console.log("CLIENT_ID:", clientId);
+
     if (!clientId || !clientSecret) {
       console.error("42 API env is not configured");
       return;
@@ -88,8 +94,18 @@ export default function Login() {
           tokenParams.append("client_id", clientId);
           tokenParams.append("client_secret", clientSecret);
           tokenParams.append("code", code);
-          tokenParams.append("state", uid);
           tokenParams.append("redirect_uri", redirectUri);
+
+          // Debug the parameters being sent
+          // console.log("Token request parameters:");
+          // console.log("grant_type: authorization_code");
+          // console.log("client_id:", clientId);
+          // console.log(
+          //   "client_secret:",
+          //   clientSecret ? "[REDACTED]" : "undefined"
+          // );
+          // console.log("code:", code);
+          // console.log("redirect_uri:", redirectUri);
 
           const controller = new AbortController();
           const timeoutId = setTimeout(() => controller.abort(), 5000); // 5s timeout
@@ -101,8 +117,18 @@ export default function Login() {
               signal: controller.signal,
             });
 
+            // console.log("Token response status:", tokenResponse.status);
+            // console.log(
+            //   "Token response headers:",
+            //   Object.fromEntries(tokenResponse.headers.entries())
+            // );
+
             if (!tokenResponse.ok) {
-              throw new Error(`Token exchange failed: ${tokenResponse.status}`);
+              const errorText = await tokenResponse.text();
+              console.log("Error response body:", errorText);
+              throw new Error(
+                `Token exchange failed: ${tokenResponse.status} - ${errorText}`
+              );
             }
 
             const tokenData = await tokenResponse.json();

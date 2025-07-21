@@ -1,5 +1,7 @@
 # 42_Swifty-Companion
 
+<img src="./42Companion/assets/images/icon.png" alt="42 Swifty Companion Logo" width="200" style="background-color: #F5F5DC; border-radius: 18px; padding: 10px;" align="right">
+
 The aim of the project is to build an application that will retrieve the information of 42 students, using the 42 API v2. The application will allow users to log in with their 42 account, search for students by login, and view their information, including skills, projects, level, etc.
 
 ## Features
@@ -106,7 +108,7 @@ The 42 API is used to retrieve student information. You can find the documentati
 
 ```mermaid
 ---
-title: 42 API Authentication Flow
+title: 42 API Authentication Flow by Tablerase
 ---
 sequenceDiagram
   actor User
