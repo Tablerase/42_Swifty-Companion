@@ -1,6 +1,6 @@
 # 42_Swifty-Companion
 
-<img src="./42Companion/assets/images/icon.png" alt="42 Swifty Companion Logo" width="200" style="background-color: #F5F5DC; border-radius: 18px; padding: 10px;" align="right">
+<img src="./42Companion/assets/images/icon.png" alt="42 Swifty Companion Logo" width="200" style="background-color: #F5F5DC; border-radius: 18px; padding: 15px;" align="right">
 
 The aim of the project is to build an application that will retrieve the information of 42 students, using the 42 API v2. The application will allow users to log in with their 42 account, search for students by login, and view their information, including skills, projects, level, etc.
 
@@ -72,7 +72,18 @@ classDef profile fill:#ffb,stroke:#333,stroke-width:2px;
    npm install
    ```
 4. Configure the app:
+   > [!NOTE]\
+   > Make sure you have the 42 API credentials before proceeding.
+   >
+   > - You can register your application on the 42 API [here](https://profile.intra.42.fr/oauth/applications/new).
    - Use the `.env.example` file to create a `.env` file with your 42 API information.
+     - Copy the `.env.example` file to `.env`:
+       ```bash
+       cp .env.example .env
+       ```
+     - Set the `EXPO_PUBLIC_42API_CLIENT_ID` and `EXPO_PUBLIC_42API_CLIENT_SECRET` with your 42 API credentials.
+   - Modify the `authConfig.ts` file to set the correct:
+     - `REDIRECT_URI` to match your app's configuration and check if the `ENDPOINTS` are correct.
    - Generate assets/fonts/services files for Android:
      - Run the following command to generate the necessary assets and services files:
        ```bash
@@ -81,7 +92,7 @@ classDef profile fill:#ffb,stroke:#333,stroke-width:2px;
      - This will create the `android/app/src/main/res` directory with the necessary files.
 5. Start the development server:
    ```bash
-   # If running on a physical device
+   # If you want to use the tunnel connection, which is useful for testing on physical devices, run:
    npx expo start --tunnel --dev-client
    ```
    ```
