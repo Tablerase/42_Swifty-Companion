@@ -4,6 +4,18 @@
 
 The aim of the project is to build an application that will retrieve the information of 42 students, using the 42 API v2. The application will allow users to log in with their 42 account, search for students by login, and view their information, including skills, projects, level, etc.
 
+## Demo
+
+<div align="center">
+  <img src="./Media/DemoAppIcon.png" alt="Demo App Icon" width="200">
+  <img src="./Media/DemoSplashScreen.png" alt="Demo Splash Screen" width="200">
+  <img src="./Media/DemoLogin.png" alt="Demo Login" width="200">
+  <img src="./Media/DemoProfileSkeleton.png" alt="Demo Profile Skeleton" width="200">
+  <img src="./Media/DemoProfile.png" alt="Demo Profile" width="200">
+  <img src="./Media/DemoProfileProjects.png" alt="Demo Profile Projects" width="200">
+  <img src="./Media/DemoNetworkError.png" alt="Demo Network Error" width="200">
+</div>
+
 ## Features
 
 - Login with 42 account
