@@ -83,11 +83,11 @@ classDef profile fill:#ffb,stroke:#333,stroke-width:2px;
    ```bash
    npm install
    ```
+> [!NOTE]\
+> Make sure you have the 42 API credentials before proceeding.
+>
+> - You can register your application on the 42 API [here](https://profile.intra.42.fr/oauth/applications/new).
 4. Configure the app:
-   > [!NOTE]\
-   > Make sure you have the 42 API credentials before proceeding.
-   >
-   > - You can register your application on the 42 API [here](https://profile.intra.42.fr/oauth/applications/new).
    - Use the `.env.example` file to create a `.env` file with your 42 API information.
      - Copy the `.env.example` file to `.env`:
        ```bash
@@ -102,7 +102,7 @@ classDef profile fill:#ffb,stroke:#333,stroke-width:2px;
        npx expo prebuild
        ```
      - This will create the `android/app/src/main/res` directory with the necessary files.
-5. Start the development server:
+6. Start the development server:
    ```bash
    # If you want to use the tunnel connection, which is useful for testing on physical devices, run:
    npx expo start --tunnel --dev-client
@@ -110,7 +110,7 @@ classDef profile fill:#ffb,stroke:#333,stroke-width:2px;
    ```
    npx expo start
    ```
-6. Building the development client:
+7. Building the development client:
    ```bash
    npx expo run:android
    ```
@@ -118,7 +118,7 @@ classDef profile fill:#ffb,stroke:#333,stroke-width:2px;
      ```bash
        npx expo prebuild
      ```
-7. Open the app on your device or emulator (if not already running).
+8. Open the app on your device or emulator (if not already running).
 
 ## 42 API
 
