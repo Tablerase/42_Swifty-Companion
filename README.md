@@ -1,10 +1,14 @@
-# 42_Swifty-Companion
+<img src="./42Companion/assets/images/icon.png" alt="42 Swifty Companion Logo" width="200" style="background-color: #F5F5DC; border-radius: 18px; padding: 15px; margin: 15px;" align="right">
 
-<img src="./42Companion/assets/images/icon.png" alt="42 Swifty Companion Logo" width="200" style="background-color: #F5F5DC; border-radius: 18px; padding: 15px;" align="right">
+# 42_Swifty-Companion
 
 The aim of the project is to build an application that will retrieve the information of 42 students, using the 42 API v2. The application will allow users to log in with their 42 account, search for students by login, and view their information, including skills, projects, level, etc.
 
 ## Demo
+
+<div align="center">
+  <img src="./Media/Demo42Companion.gif" alt="Demo App" width="400">
+</div>
 
 <div align="center">
   <img src="./Media/DemoAppIcon.png" alt="Demo App Icon" width="200">
@@ -83,10 +87,10 @@ classDef profile fill:#ffb,stroke:#333,stroke-width:2px;
    ```bash
    npm install
    ```
-> [!NOTE]\
-> Make sure you have the 42 API credentials before proceeding.
->
-> - You can register your application on the 42 API [here](https://profile.intra.42.fr/oauth/applications/new).
+   > [!NOTE]\
+   > Make sure you have the 42 API credentials before proceeding.
+   >
+   > - You can register your application on the 42 API [here](https://profile.intra.42.fr/oauth/applications/new).
 4. Configure the app:
    - Use the `.env.example` file to create a `.env` file with your 42 API information.
      - Copy the `.env.example` file to `.env`:
@@ -102,7 +106,7 @@ classDef profile fill:#ffb,stroke:#333,stroke-width:2px;
        npx expo prebuild
        ```
      - This will create the `android/app/src/main/res` directory with the necessary files.
-6. Start the development server:
+5. Start the development server:
    ```bash
    # If you want to use the tunnel connection, which is useful for testing on physical devices, run:
    npx expo start --tunnel --dev-client
@@ -110,7 +114,7 @@ classDef profile fill:#ffb,stroke:#333,stroke-width:2px;
    ```
    npx expo start
    ```
-7. Building the development client:
+6. Building the development client:
    ```bash
    npx expo run:android
    ```
@@ -118,7 +122,7 @@ classDef profile fill:#ffb,stroke:#333,stroke-width:2px;
      ```bash
        npx expo prebuild
      ```
-8. Open the app on your device or emulator (if not already running).
+7. Open the app on your device or emulator (if not already running).
 
 ## 42 API
 
