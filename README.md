@@ -124,6 +124,26 @@ classDef profile fill:#ffb,stroke:#333,stroke-width:2px;
      ```
 7. Open the app on your device or emulator (if not already running).
 
+### Building
+
+```bash
+# Go in Android folder
+cd 42Companion/android
+# For local apk (no debug server)
+./gradlew assembleRelease
+```
+
+```bash
+# Install apk into phone or emulator
+# Activate emulator or connect phone
+./gradlew installRelease
+```
+
+```bash
+# Or
+# adb install -r 42Companion/android/app/build/outputs/apk/release/app-release.apk
+```
+
 ## 42 API
 
 The 42 API is used to retrieve student information. You can find the documentation [here](https://api.intra.42.fr/apidoc).
