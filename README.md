@@ -2,7 +2,7 @@
 
 # 42_Swifty-Companion
 
-The aim of the project is to build an application that will retrieve the information of 42 students, using the 42 API v2. The application will allow users to log in with their 42 account, search for students by login, and view their information, including skills, projects, level, etc.
+Mobile application that will retrieve the information of 42 students, using the 42 API v2. The application will allow users to log in with their 42 account, search for students by login, and view their information, including skills, projects, level, etc.
 
 ## Demo
 
@@ -87,10 +87,12 @@ classDef profile fill:#ffb,stroke:#333,stroke-width:2px;
    ```bash
    npm install
    ```
-   > [!NOTE]\
-   > Make sure you have the 42 API credentials before proceeding.
-   >
-   > - You can register your application on the 42 API [here](https://profile.intra.42.fr/oauth/applications/new).
+
+ > [!NOTE]\
+ > Make sure you have the 42 API credentials before proceeding.
+ >
+ > - You can register your application on the 42 API [here](https://profile.intra.42.fr/oauth/applications/new).
+
 4. Configure the app:
    - Use the `.env.example` file to create a `.env` file with your 42 API information.
      - Copy the `.env.example` file to `.env`:
